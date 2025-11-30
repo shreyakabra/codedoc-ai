@@ -1,0 +1,64 @@
+# Sample Queries for CodeDoc AI Demo
+
+## Basic Questions
+How does this codebase work?
+What is the main entry point?
+Where is the authentication logic?
+How do I run tests?
+What dependencies does this project have?
+
+## Specific Code Questions
+How does the payment processing work?
+What retry logic is implemented?
+Where are the API endpoints defined?
+How is error handling implemented?
+What database is being used?
+
+## Architecture Questions
+What is the overall architecture?
+How do the components communicate?
+What design patterns are used?
+Where is the configuration stored?
+How is the application deployed?
+
+## Onboarding Questions
+How do I set up the development environment?
+What are the main modules I should know about?
+Where should I start reading the code?
+What are the coding conventions?
+How do I contribute to this project?
+
+## Performance Questions
+What are the performance bottlenecks?
+How is caching implemented?
+What optimization techniques are used?
+Where are the slow queries?
+How can I improve performance?
+
+## Security Questions
+How is authentication handled?
+Where are secrets stored?
+What security measures are in place?
+How is input validation done?
+Are there any known vulnerabilities?
+
+## Testing Questions
+How do I run the test suite?
+What is the test coverage?
+Where are the integration tests?
+How do I write a new test?
+What testing frameworks are used?
+
+## Debugging Questions
+How do I debug this application?
+Where are the logs stored?
+What logging levels are available?
+How do I enable verbose logging?
+What monitoring tools are integrated?
+
+## Advanced Questions
+How does the CI/CD pipeline work?
+What happens when a request fails?
+How is horizontal scaling achieved?
+Where is the documentation generated?
+How do webhooks get processed?

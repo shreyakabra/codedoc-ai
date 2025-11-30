@@ -1,0 +1,175 @@
+version: '3.8'
+
+services:
+  # Redis for task queue
+  redis:
+    image: redis:7-alpine
+    container_name: codedoc-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Vector Database (FAISS runs in-process, but we can use Milvus for production)
+  # Uncomment for Milvus production deployment
+  # milvus:
+  #   image: milvusdb/milvus:latest
+  #   container_name: codedoc-milvus
+  #   ports:
+  #     - "19530:19530"
+  #     - "9091:9091"
+  #   volumes:
+  #     - milvus_data:/var/lib/milvus
+  #   environment:
+  #     ETCD_ENDPOINTS: etcd:2379
+  #     MINIO_ADDRESS: minio:9000
+
+  # PostgreSQL for metadata (optional - using SQLite by default)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: codedoc-postgres
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: codedoc
+  #     POSTGRES_PASSWORD: codedoc_password
+  #     POSTGRES_DB: codedoc_metadata
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  # CodeDoc AI Application
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codedoc-api
+    ports:
+      - "8000:8000"
+    environment:
+      # Groq API
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      
+      # Vector DB
+      - VECTOR_DB_TYPE=faiss
+      - VECTOR_DB_PATH=/data/faiss_index
+      - METADATA_DB_URL=sqlite:////data/metadata.db
+      
+      # Redis
+      - REDIS_URL=redis://redis:6379/0
+      
+      # GitHub MCP (optional)
+      - GITHUB_APP_ID=${GITHUB_APP_ID:-}
+      - GITHUB_PRIVATE_KEY_PATH=${GITHUB_PRIVATE_KEY_PATH:-}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      
+      # Jira MCP (optional)
+      - JIRA_BASE_URL=${JIRA_BASE_URL:-}
+      - JIRA_EMAIL=${JIRA_EMAIL:-}
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN:-}
+      
+      # Confluence MCP (optional)
+      - CONFLUENCE_BASE_URL=${CONFLUENCE_BASE_URL:-}
+      - CONFLUENCE_EMAIL=${CONFLUENCE_EMAIL:-}
+      - CONFLUENCE_API_TOKEN=${CONFLUENCE_API_TOKEN:-}
+      
+      # Performance
+      - MAX_WORKERS=10
+      - BATCH_SIZE=50
+      
+      # Feature flags
+      - ENABLE_VOICE=false
+      - ENABLE_MULTIMODAL=true
+      - ENABLE_JIRA_INTEGRATION=false
+      - ENABLE_CONFLUENCE_INTEGRATION=false
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+      - ./logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: uvicorn src.api:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Celery Worker for background tasks
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codedoc-worker
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - VECTOR_DB_TYPE=faiss
+      - VECTOR_DB_PATH=/data/faiss_index
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    command: celery -A src.tasks worker --loglevel=info --concurrency=4
+
+  # Streamlit UI (optional - for demo)
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codedoc-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - api
+    command: streamlit run src/ui.py --server.port 8501 --server.address 0.0.0.0
+
+  # Prometheus for metrics (optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: codedoc-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
+  # Grafana for dashboards (optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: codedoc-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+      - prometheus
+
+volumes:
+  redis_data:
+  postgres_data:
+  milvus_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    name: codedoc-network
