@@ -106,25 +106,6 @@ python src/cli.py chat
 
 ---
 
-## 🎬 Demo Video Script (3 Minutes)
-
-The `demo/demo_script.md` file contains a **detailed 3-minute demo flow** with:
-- Exact timestamps for each section
-- What to show on screen
-- What to say (word-for-word scripts)
-- Camera/audio setup tips
-- Post-production editing notes
-
-**Demo highlights:**
-1. **0:00-0:15** - Hook (problem statement)
-2. **0:15-0:45** - Live repo ingestion (show speed)
-3. **0:45-1:30** - Interactive Q&A (show sub-500ms responses)
-4. **1:30-2:15** - PR analysis (auto-commenting)
-5. **2:15-2:45** - Doc generation (onboarding guide)
-6. **2:45-3:00** - Metrics and call-to-action
-
----
-
 ## 🏗️ What's Implemented vs. What's Stubbed
 
 ### ✅ Fully Implemented
@@ -194,17 +175,6 @@ Each stubbed component has:
    - Integration tests
    - Prometheus metrics
    - Grafana dashboards
-
----
-
-## 📊 Judging Criteria Scorecard
-
-| Criterion | Weight | Our Score | Evidence |
-|-----------|--------|-----------|----------|
-| **Technical Excellence** | 35% | 32/35 | ✓ 6 agents + orchestrator<br>✓ Groq performance optimized<br>✓ MCP integration points<br>✓ Clean, documented code |
-| **Real-World Impact** | 35% | 34/35 | ✓ Solves real developer pain<br>✓ Production-ready architecture<br>✓ Measurable ROI ($300K/year)<br>✓ Scalable design |
-| **Innovation** | 30% | 28/30 | ✓ Multi-modal (text+vision+voice)<br>✓ Novel agent coordination<br>✓ Real-time PR workflow<br>✓ Cited answers with provenance |
-| **TOTAL** | 100% | **94/100** | **A-grade submission** |
 
 ---
 
@@ -305,9 +275,9 @@ Contributions welcome! We've set up:
 - Test stubs ready to fill in
 
 ### Roadmap
-**Phase 1 (Hackathon)**: Core functionality + demo
-**Phase 2 (Q1 2025)**: Production features + UI
-**Phase 3 (Q2 2025)**: Enterprise features + SaaS offering
+**Phase 1**: Core functionality + demo
+**Phase 2**: Production features + UI
+**Phase 3**: Enterprise features + SaaS offering
 
 ---
 
