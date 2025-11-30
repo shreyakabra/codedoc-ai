@@ -100,7 +100,6 @@ codedoc-ai/
 │   └── cli.py                  # Command-line interface
 ├── demo/
 │   ├── sample_repo.zip         # Demo codebase
-│   ├── demo_script.md          # 3-minute demo walkthrough
 │   └── sample_queries.txt      # Example questions
 ├── tests/
 │   ├── test_agents.py
