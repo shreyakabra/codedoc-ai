@@ -123,12 +123,6 @@ codedoc-ai/
 - **1,000+ files/minute** ingestion
 - **Real-time** PR analysis
 
-### MCP Integrations
-- ✅ GitHub (webhooks, PRs, comments)
-- ✅ Jira (ticket creation)
-- ✅ Confluence (doc publishing)
-- ✅ Vector DB (FAISS/Milvus)
-
 ### Multi-Modal Intelligence
 - 📝 Code analysis (Python, JS, Java, C++, Go, Rust)
 - 🖼️ Diagram extraction from images
@@ -160,26 +154,6 @@ python demo.py
 | Ingestion Rate | 1,247 files/min | Parallel processing |
 | PR Analysis | 1.8s avg | Enables auto-commenting |
 | Accuracy (Code Q&A) | 94.3% | Human eval (n=100) |
-
-## 🏆 Judging Criteria Alignment
-
-### Technical Excellence (35%)
-- ✅ Multi-agent coordination (6 agents)
-- ✅ Groq performance optimization (< 500ms)
-- ✅ MCP integrations (GitHub, Jira, Confluence)
-- ✅ Clean, documented code with tests
-
-### Real-World Impact (35%)
-- ✅ Solves actual developer pain (onboarding, docs)
-- ✅ Production-ready (error handling, security)
-- ✅ Scalable (handles 100K+ file repos)
-- ✅ Measurable ROI ($300K+/year for 10-dev team)
-
-### Innovation (30%)
-- ✅ Multi-modal (code + diagrams + voice)
-- ✅ Novel agent coordination patterns
-- ✅ Real-time PR analysis workflow
-- ✅ Cited answers with provenance
 
 ## 🛠️ Tech Stack
 
