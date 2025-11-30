@@ -252,4 +252,4 @@ MIT License - see LICENSE file for details
 
 ---
 
-**Questions?** Open an issue or contact [@yourhandle](https://twitter.com/yourhandle)
+**Questions?** Open an issue or contact: kabrashreya23@gmail.com
